@@ -24,10 +24,10 @@ export class Edit extends React.Component {
         axios.get('http://localhost:4000/api/movies/'+this.props.match.params.id)
         .then(response =>{
             this.setState({
-                _id:response.data._id,
-                Title:response.data.title,
-                Year:response.data.year,
-                Poster:response.data.poster
+                Title:response.data.Title,
+                Year:response.data.Year,
+                Poster:response.data.Poster,
+                _id:response.data._id
             })
         })
         .catch((error)=>{

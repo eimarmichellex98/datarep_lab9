@@ -30,9 +30,9 @@ class App extends Component {
 
           <br />
           <Switch>
-            <Route path='/' component={Content}/>
-            <Route path='/create' component={Create}/>
-            <Route path='/read' component={Read}/>
+            <Route path='/' component={Content}></Route>
+            <Route path='/create' component={Create}></Route>
+            <Route path='/read' component={Read}></Route>
             <Route path='/edit/:id'component={Edit}></Route>
           </Switch>
         </div>
