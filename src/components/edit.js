@@ -1,46 +1,57 @@
 import React from 'react';
 import axios from 'axios';
 
-export class Create extends React.Component {
+export class Edit extends React.Component {
 
-     //using constructor to create form object and super class
     constructor() {
-        //to use forms we need super class and invoke parent class
         super();
 
-         //binding all events to 'this' keyword
         this.onSubmit = this.onSubmit.bind(this);
         this.onChangeTitle = this.onChangeTitle.bind(this);
         this.onChangeYear = this.onChangeYear.bind(this);
         this.onChangePoster = this.onChangePoster.bind(this);
 
-         //fields taken to use in form
         this.state = {
             Title: '',
             Year: '',
             Poster: ''
         }
     }
-    //method takes argument e, when we update the input it will display the new Title
+
+    componentDidMount(){
+        console.log(this.props.match.params.id);
+
+        axios.get('http://localhost:4000/api/movies/'+this.props.match.params.id)
+        .then(response =>{
+            this.setState({
+                _id:response.data._id,
+                Title:response.data.title,
+                Year:response.data.year,
+                Poster:response.data.poster
+            })
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
+    }
+
     onChangeTitle(e) {
         this.setState({
             Title: e.target.value
         });
     }
-     //method takes argument e, new input will update and then display new Year
+
     onChangeYear(e) {
         this.setState({
             Year: e.target.value
         });
     }
-    //method takes argument e, when input is updated, a new Poster will be displayed
     onChangePoster(e) {
         this.setState({
             Poster: e.target.value
         })
     }
-    //onSubmit method, argument taken is e, default prevents us from calling it multiple times
-    //message appears as an alert
+
     onSubmit(e) {
         e.preventDefault();
         alert("Movie: " + this.state.Title + " "
@@ -50,16 +61,18 @@ export class Create extends React.Component {
             const newMovie ={
                 Title:this.state.Title,
                 Year:this.state.Year,
-                Poster:this.state.Poster
+                Poster:this.state.Poster,
+                _id:this.state._id
             };
 
-        axios.post('http://localhost:4000/api/movies', newMovie)
-        .then(response => console.log(response.data))
-        .catch(error => console.log(error));    
-
+            //edit a record
+            axios.put('http://localhost:4000/api/movies/'+this.state._id, newMovie)
+            .then(res =>{
+                console.log(res.data)
+            })
+            .catch();
     }
-    //form has a onSubmit button and once clicked it invokes a method
-    //div all holding different inputs on webpage for user, Movie Title, Year, Poster
+
     render() {
         return (
             <div className='App'>
@@ -90,7 +103,7 @@ export class Create extends React.Component {
 
                     <div className="form-group">
                         <input type='submit'
-                            value='Add Movie'
+                            value='Edit Movie'
                             className='btn btn-primary'></input>
                     </div>
                 </form>

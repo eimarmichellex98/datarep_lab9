@@ -8,11 +8,11 @@ export class Read extends React.Component {
         super();
         this.ReloadData = this.ReloadData.bind(this);
     }
-
+    //JSON added holding data that will be used to display on read component online
     state = {
         movies: []
     };
-
+    //reload method
     ReloadData(){
         axios.get('http://localhost:4000/api/movies')
             .then((response) => {
@@ -24,6 +24,7 @@ export class Read extends React.Component {
     }
 
     componentDidMount() {
+        //axios resource goes to retrieve JSON file and displays it 
         axios.get('http://localhost:4000/api/movies')
             .then((response) => {
                 this.setState({ movies: response.data })
@@ -34,6 +35,7 @@ export class Read extends React.Component {
     }
 
     render() {
+        //passing to movies.js
         return (
             <div>
                 <h1>This is the read component.</h1>
